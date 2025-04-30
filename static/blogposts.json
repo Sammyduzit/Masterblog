@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "author": "Jalal al-Din al-Rumi ",
+        "title": "Born to Soar",
+        "content": "You were born with wings, why prefer to crawl through life?",
+        "likes": 0
+    },
+    {
+        "id": 2,
+        "author": "Adi Shankaracharya",
+        "title": "I am Shiva",
+        "content": "I am neither mind, nor intellect, nor ego, nor the reflections of the inner self (chitta).\nI am not the five senses. I am beyond that.\nI am not the ether, nor the earth, nor the fire, nor the wind (air).\nI am indeed, That eternal knowing and bliss, Shiva, love and pure consciousness.",
+        "likes": 0
+    },
+    {
+        "id": 3,
+        "author": "Lao Tzu",
+        "title": "The Power of Surrender",
+        "content": "When I let go of what I am, I become what I might be.",
+        "likes": 0
+    }
+]

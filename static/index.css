@@ -1,0 +1,111 @@
+/* index.css */
+
+header {
+    padding: 40px 0 30px;
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 40px;
+}
+
+.blog-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.post-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.post-content {
+    padding: 25px;
+}
+
+.post-title {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.post-text {
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #555;
+}
+
+.author-name {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.post-actions {
+    display: flex;
+    padding: 15px 25px;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fafafa;
+    justify-content: space-between;
+}
+
+.action-left {
+    display: flex;
+    gap: 10px;
+}
+
+.like-container {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.add-post-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #3498db;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.add-post-btn:hover {
+    background-color: #2980b9;
+    transform: scale(1.1);
+}
