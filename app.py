@@ -29,11 +29,6 @@ def add():
     """
     if request.method == "POST":
         data = request.get_json() if request.is_json else request.form.to_dict()
-        required_fields = ["author", "title", "content"]
-
-        for field in required_fields:
-            if field in data:
-                data[field] = data[field].strip()
 
         #validate submitted data
         is_valid, errors = data_handle.validate_post_data(data)
