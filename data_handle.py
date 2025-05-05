@@ -2,9 +2,10 @@
 Data handling functions for blog application
 """
 import json
+import os
 
-# File path for blog data
-BLOGPOSTS = "static/blogposts.json"
+DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
+BLOGPOSTS = os.path.join(DATA_DIR, 'blogposts.json')
 
 
 def load_json(filepath):
