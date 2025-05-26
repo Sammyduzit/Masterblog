@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, abort
 import data_handle
+import utils
 
 app = Flask(__name__)
 
@@ -11,7 +12,7 @@ def index():
     and passing them to the index.html template.
     :return: Rendered html template for the home page.
     """
-    blogposts = data_handle.get_all_posts()
+    blogposts = data_handle.load_blog_posts()
     return render_template("index.html", blogposts=blogposts)
 
 
@@ -31,7 +32,7 @@ def add():
         data = request.get_json() if request.is_json else request.form.to_dict()
 
         #validate submitted data
-        is_valid, errors = data_handle.validate_post_data(data)
+        is_valid, errors = utils.validate_post_data(data)
         if not is_valid:
             return jsonify({"errors": errors}), 400
 
@@ -75,7 +76,7 @@ def update(post_id):
 
     if request.method == "POST":
         data = request.get_json() if request.is_json else request.form.to_dict()
-        is_valid, errors = data_handle.validate_post_data(data)
+        is_valid, errors = utils.validate_post_data(data)
         if not is_valid:
             return jsonify({"errors": errors}), 400
 
