@@ -8,45 +8,32 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
 BLOGPOSTS = os.path.join(DATA_DIR, 'blogposts.json')
 
 
-def load_json(filepath):
+def load_blog_posts(filepath = BLOGPOSTS):
     """
     Load blog posts from JSON file.
-    :param filepath: Path to the JSON file.
-    :return: Parsed JSON data as a Python object, or empty list if an error occurs.
+    :param filepath: Path to the JSON file (defaults to BLOGPOSTS constant).
+    :return: List of blog posts (list of dicts), or empty list if an error occurs.
     """
     try:
         with open(filepath, "r") as handle:
             return json.load(handle)
-    except (FileNotFoundError, json.JSONDecodeError):
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        print(f"Error loading blog posts from {filepath}: {e}")
         return []
 
 
-def save_json(filepath, data):
+def save_blog_posts(posts, filepath = BLOGPOSTS):
     """
     Save blog posts to JSON file.
-    :param filepath: Path to the JSON file.
-    :param data: Data to be saved.
-    :return: None
-    """
-    with open(filepath, "w") as handle:
-        json.dump(data, handle, indent=4)
-
-
-def get_all_posts():
-    """
-    Get all blog posts from json file.
-    :return: List of blog posts (list of dicts), or empty list if no posts are found.
-    """
-    return load_json(BLOGPOSTS)
-
-
-def save_all_posts(posts):
-    """
-    Save all blog posts to json file.
     :param posts: List of blog posts to save (list of dicts).
+    :param filepath: Path to the JSON file (defaults to BLOGPOSTS constant).
     :return: None
     """
-    save_json(BLOGPOSTS, posts)
+    try:
+        with open(filepath, "w") as handle:
+            json.dump(posts, handle, indent=4)
+    except (OSError, IOError) as e:
+        raise RuntimeError(f"Failed to save blog posts to {filepath}: {e}") from e
 
 
 def get_post_by_id(post_id):
@@ -55,7 +42,7 @@ def get_post_by_id(post_id):
     :param post_id: ID of the blog post to retrieve.
     :return: Blog post as a dictionary, or None if not found.
     """
-    posts = get_all_posts()
+    posts = load_blog_posts()
     return next((post for post in posts if post["id"] == post_id), None)
 
 
@@ -67,7 +54,7 @@ def create_post(author, title, content):
     :param content: Content of the blog post.
     :return: None
     """
-    posts = get_all_posts()
+    posts = load_blog_posts()
 
     # Generate new ID (handle empty list case)
     new_id = 1
@@ -83,7 +70,7 @@ def create_post(author, title, content):
     }
 
     posts.append(new_post)
-    save_all_posts(posts)
+    save_blog_posts(posts)
 
 
 def update_post(post_id, data):
@@ -93,7 +80,7 @@ def update_post(post_id, data):
     :param data: Dictionary containing updated fields of "author", "title" and "content".
     :return: None if post is not found
     """
-    posts = get_all_posts()
+    posts = load_blog_posts()
     post = next((post for post in posts if post["id"] == post_id), None)
 
     if post is None:
@@ -106,7 +93,7 @@ def update_post(post_id, data):
         "content": data["content"]
     })
 
-    save_all_posts(posts)
+    save_blog_posts(posts)
 
 
 def delete_post(post_id):
@@ -115,13 +102,13 @@ def delete_post(post_id):
     :param post_id: ID of the blog post to delete.
     :return: True if post was successfully deleted, False otherwise.
     """
-    posts = get_all_posts()
+    posts = load_blog_posts()
     initial_count = len(posts)
 
     posts = [post for post in posts if post["id"] != post_id]
 
     if len(posts) < initial_count:
-        save_all_posts(posts)
+        save_blog_posts(posts)
         return True
     return False
 
@@ -132,52 +119,12 @@ def like_post(post_id):
     :param post_id: ID of the blog post to like.
     :return: Updated post as dictionary, or None if post not found.
     """
-    posts = get_all_posts()
+    posts = load_blog_posts()
     post = next((post for post in posts if post["id"] == post_id), None)
 
     if post is None:
         return None
 
     post["likes"] = post.get("likes", 0) + 1
-    save_all_posts(posts)
+    save_blog_posts(posts)
     return post
-
-
-def validate_post_data(data):
-    """
-    Validates the structure and content of post data.
-    Checks if the required fields "author", "title" and "content" exist and are valid (non-empty string)
-    :param data: Dictionary containing blog post data.
-    :return: tuple: (is_valid: bool, errors: list)
-    """
-    errors = []
-    required_fields = {"author", "title", "content"}
-    for field in required_fields:
-        if field not in data:
-            errors.append(f"Missing required field: {field}")
-            continue
-
-        if not isinstance(data[field], str):
-            errors.append(f"'{field}' must be a string.")
-        elif not data[field].strip():
-            errors.append(f"'{field}' cannot be empty.")
-
-
-    errors = []
-
-    # Check if all required fields are present
-    required_fields = ["author", "title", "content"]
-    missing_fields = [field for field in required_fields if field not in data]
-    if missing_fields:
-        errors.append(f"Missing fields: {', '.join(missing_fields)}")
-
-    # Validate each field
-    for field in required_fields:
-        if field in data:
-            if not isinstance(data[field], str):
-                errors.append(f"'{field}' must be a string.")
-            elif not data[field].strip():
-                errors.append(f"'{field}' cannot be empty.")
-
-    # Return validation result
-    return len(errors) == 0, errors
